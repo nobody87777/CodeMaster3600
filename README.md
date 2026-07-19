@@ -1,6 +1,7 @@
-This folder is reserved for self-hosted font files (e.g. .woff2).
+This folder is reserved for additional standalone HTML pages
+(e.g. `pages/about.html`, `pages/privacy.html`).
 
-The source page only used the browser's default system font stack
-(ui-sans-serif / ui-monospace, no @font-face rules), so this folder is
-currently empty. To add a custom font, drop the font file(s) here and
-add an @font-face rule in style.css pointing to `assets/fonts/your-font.woff2`.
+The source was a single page, so this folder is currently empty. Any
+page added here can link back to the site root with a relative path
+like `../index.html`, and should link its own CSS/JS with
+`../style.css` and `../script.js`.
