@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Performance Analytics — MultitaskCoder</title>
+  <meta name="description" content="Dashboard tracking XP, level, typing speed, debugger accuracy, and quiz history.">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MultitaskCoder">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="../assets/icons/icon-192.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="min-h-screen bg-[#0a0d14] text-slate-100 transition-colors surface-page app-shell">
+    <header class="sticky top-0 z-40 flex items-center justify-between gap-3 px-4 py-3 backdrop-blur-xl border-b bg-[#0a0d14]/80 border-white/10 surface-panel">
+      <a href="../index.html" class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 logo-3d" aria-label="MultitaskCoder home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-terminal" aria-hidden="true">
+          <path d="M12 19h8"></path>
+          <path d="m4 17 6-6-6-6"></path>
+        </svg>
+      </a>
+      <div class="flex items-center gap-3 rounded-full border px-3 py-1.5 bg-white/[0.03] border-white/10 surface-panel">
+        <div class="flex h-7 w-7 items-center justify-center rounded-md bg-amber-500/15 text-amber-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot" aria-hidden="true">
+            <path d="M12 8V4H8"></path>
+            <rect width="16" height="12" x="4" y="8" rx="2"></rect>
+            <path d="M2 14h2"></path>
+            <path d="M20 14h2"></path>
+            <path d="M15 13v2"></path>
+            <path d="M9 13v2"></path>
+          </svg>
+        </div>
+        <div class="flex flex-col leading-none">
+          <div class="flex items-center gap-6 text-xs font-semibold">
+            <span id="levelLabel">Lvl 1</span>
+            <span id="xpLabel" class="text-slate-400 text-muted">10 XP</span>
+          </div>
+          <div class="mt-1 h-1 w-28 overflow-hidden rounded-full bg-white/10">
+            <div id="xpBar" class="h-full w-1/5 rounded-full bg-indigo-500 xp-bar-fill"></div>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="themeToggleBtn" aria-label="Toggle theme" class="flex h-11 w-11 items-center justify-center rounded-xl border bg-white/[0.03] border-white/10 surface-panel btn-3d">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun" aria-hidden="true" id="themeIcon">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path>
+            <path d="M12 20v2"></path>
+            <path d="m4.93 4.93 1.41 1.41"></path>
+            <path d="m17.66 17.66 1.41 1.41"></path>
+            <path d="M2 12h2"></path>
+            <path d="M20 12h2"></path>
+            <path d="m6.34 17.66-1.41 1.41"></path>
+            <path d="m19.07 4.93-1.41 1.41"></path>
+          </svg>
+        </button>
+        <button id="menuToggleBtn" aria-label="Open menu" aria-expanded="false" class="flex h-11 w-11 items-center justify-center rounded-xl border bg-white/[0.03] border-white/10 surface-panel btn-3d">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu" aria-hidden="true">
+            <path d="M4 5h16"></path>
+            <path d="M4 12h16"></path>
+            <path d="M4 19h16"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div id="navOverlay" class="nav-overlay"></div>
+    <nav id="navDrawer" class="nav-drawer surface-panel" aria-label="Site navigation">
+      <div class="nav-drawer-head">
+        <span class="nav-drawer-title">Menu</span>
+        <button id="navCloseBtn" class="btn-3d nav-close-btn" aria-label="Close menu">&times;</button>
+      </div>
+      <a href="../index.html" class="nav-drawer-link">Home</a>
+      <a href="./theory.html" class="nav-drawer-link">Theory Reference</a>
+      <a href="./typing.html" class="nav-drawer-link">Speed Typing</a>
+      <a href="./debugger.html" class="nav-drawer-link">Debugger Arena</a>
+      <a href="./quizzes.html" class="nav-drawer-link">Brain Quizzes</a>
+      <a href="./analytics.html" class="nav-drawer-link">Performance Analytics</a>
+    </nav>
+    <main class="app-container">
+      <a href="../index.html" class="app-back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+        Back to home
+      </a>
+      <div class="app-page-head">
+        <div class="app-page-icon bg-sky-500"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div>
+        <div>
+          <h1 class="app-page-title">Performance Analytics</h1>
+          <p class="app-page-sub">Track streaks, accuracy & XP.</p>
+        </div>
+      </div>
+      <div class="app-grid-3" style="margin-bottom:1.25rem;">
+        <div class="app-stat"><div class="app-stat-value" id="aLevel">Lvl 1</div><div class="app-stat-label">Level</div></div>
+        <div class="app-stat"><div class="app-stat-value" id="aXp">10</div><div class="app-stat-label">Total XP</div></div>
+        <div class="app-stat"><div class="app-stat-value" id="aQuizBest">—</div><div class="app-stat-label">Quiz best</div></div>
+      </div>
+
+      <div class="app-panel">
+        <h2 class="text-base font-bold mb-3">Typing speed by language (WPM)</h2>
+        <div id="wpmBars"></div>
+      </div>
+
+      <div class="app-panel">
+        <h2 class="text-base font-bold mb-3">Debugger Arena accuracy</h2>
+        <div id="debugBar"></div>
+      </div>
+
+      <div class="app-panel">
+        <h2 class="text-base font-bold mb-3">Recent activity</h2>
+        <div id="activityList"><p class="text-sm text-muted">Nothing recorded yet — go finish a typing run, a debugger round, or a quiz.</p></div>
+      </div>
+
+      <button class="app-btn app-btn-ghost" id="resetBtn" style="margin-top:0.5rem;">Reset all progress</button>
+
+    </main>
+  </div>
+  <script src="../script.js"></script>
+  <script src="./analytics.js"></script>
+</body>
+</html>
