@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theory Reference — MultitaskCoder</title>
+<meta name="description" content="Complete C, Python, and Java programming theory — from absolute fundamentals to interview prep, with every example compiled and run.">
+<meta name="theme-color" content="#4f46e5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MultitaskCoder">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../assets/icons/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="../assets/icons/icon-192.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+/* ==========================================================
+   Theory Reference — page-only additions.
+   Everything above this (shell/header/nav/panels/buttons) is
+   the site's existing style.css. This block only covers what
+   that stylesheet has no rules for yet: long-form chapter
+   text, code blocks, tables, callouts, and the chapter browser.
+   Colors are pulled from the site's own --color-* tokens so it
+   stays in sync with the rest of the app automatically.
+   ========================================================== */
+
+.chapter-toc details {
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.75rem;
+  background: rgba(255,255,255,0.03);
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+.chapter-toc summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+.chapter-toc summary::-webkit-details-marker { display: none; }
+.chapter-toc summary::before {
+  content: "▸";
+  color: var(--color-indigo-400);
+  margin-right: 0.5rem;
+  transition: transform 0.15s ease;
+}
+.chapter-toc details[open] summary::before { transform: rotate(90deg); }
+.chapter-toc .toc-progress {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-slate-400);
+  font-weight: 400;
+}
+.chapter-toc ul { list-style: none; padding: 0 0.75rem 0.75rem; margin: 0; }
+.chapter-toc li {
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.84rem;
+}
+.chapter-toc li.done a {
+  color: var(--color-slate-100, #f1f5f9);
+  text-decoration: none;
+  display: flex;
+  gap: 0.5rem;
+}
+.chapter-toc li.done:hover { background: rgba(255,255,255,0.05); }
+.chapter-toc li.done .tick { color: var(--color-emerald-400); font-weight: 700; }
+.chapter-toc li.pending { color: var(--color-slate-500); opacity: 0.6; }
+.chapter-toc li.pending .tick { opacity: 0.5; }
+
+.theory-content { font-size: 0.95rem; line-height: 1.75; color: var(--color-slate-100, #f1f5f9); }
+.theory-content h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 2.2rem 0 1rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  scroll-margin-top: 5.5rem;
+}
+.theory-content > h1:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+.theory-content h2 {
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin: 1.9rem 0 0.8rem;
+  padding-left: 0.7rem;
+  border-left: 3px solid var(--color-indigo-500);
+  scroll-margin-top: 5.5rem;
+}
+.theory-content h3 {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-slate-400);
+  margin: 1.5rem 0 0.6rem;
+}
+.theory-content h3::before { content: "// "; color: var(--color-indigo-400); }
+.theory-content p, .theory-content li { margin: 0.5rem 0; }
+.theory-content ul, .theory-content ol { padding-left: 1.3rem; }
+.theory-content strong { color: #fff; }
+.theory-content hr { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0; }
+
+.theory-content code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: rgba(99,102,241,0.12);
+  padding: 0.1em 0.4em;
+  border-radius: 0.25rem;
+}
+.theory-content pre {
+  position: relative;
+  background: #070911;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.75rem;
+  padding: 1.1rem 1.2rem;
+  overflow-x: auto;
+  margin: 1.1rem 0 1.5rem;
+}
+.theory-content pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.83em;
+  line-height: 1.6;
+}
+.theory-content pre::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0.5rem;
+  right: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-indigo-400);
+  opacity: 0.8;
+}
+.theory-copy-btn {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.75rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--color-slate-400);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.theory-content pre:hover .theory-copy-btn { opacity: 1; }
+
+.theory-content table { width: 100%; border-collapse: collapse; margin: 1.3rem 0; font-size: 0.85rem; }
+.theory-content th, .theory-content td {
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.theory-content th {
+  background: rgba(99,102,241,0.15);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--color-indigo-300);
+}
+.theory-content tr.odd td { background: rgba(255,255,255,0.02); }
+
+.callout {
+  border-left: 3px solid var(--color-indigo-500);
+  background: rgba(99,102,241,0.08);
+  padding: 0.85rem 1.1rem;
+  margin: 1.4rem 0;
+  border-radius: 0 0.6rem 0.6rem 0;
+  font-size: 0.88rem;
+}
+.callout p { margin: 0; }
+.callout-warning { border-left-color: var(--color-rose-500); background: rgba(244,63,94,0.08); }
+.callout-note { border-left-color: var(--color-sky-500); background: rgba(14,165,233,0.07); }
+</style>
+</head>
+<body>
+<div class="min-h-screen bg-[#0a0d14] text-slate-100 transition-colors surface-page app-shell">
+
+<header class="sticky top-0 z-40 flex items-center justify-between gap-3 px-4 py-3 backdrop-blur-xl border-b bg-[#0a0d14]/80 border-white/10 surface-panel">
+<a href="../index.html" class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 logo-3d" aria-label="MultitaskCoder home">
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-terminal" aria-hidden="true">
+<path d="M12 19h8"></path>
+<path d="m4 17 6-6-6-6"></path>
+</svg>
+</a>
+<div class="flex items-center gap-3 rounded-full border px-3 py-1.5 bg-white/[0.03] border-white/10 surface-panel">
+<div class="flex h-7 w-7 items-center justify-center rounded-md bg-amber-500/15 text-amber-400">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bot" aria-hidden="true">
+<path d="M12 8V4H8"></path>
+<rect width="16" height="12" x="4" y="8" rx="2"></rect>
+<path d="M2 14h2"></path>
+<path d="M20 14h2"></path>
+<path d="M15 13v2"></path>
+<path d="M9 13v2"></path>
+</svg>
+</div>
+<div class="flex flex-col leading-none">
+<div class="flex items-center gap-6 text-xs font-semibold">
+<span id="levelLabel">Lvl 1</span>
+<span id="xpLabel" class="text-slate-400 text-muted">10 XP</span>
+</div>
+<div class="mt-1 h-1 w-28 overflow-hidden rounded-full bg-white/10">
+<div id="xpBar" class="h-full w-1/5 rounded-full bg-indigo-500 xp-bar-fill"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button id="themeToggleBtn" aria-label="Toggle theme" class="flex h-11 w-11 items-center justify-center rounded-xl border bg-white/[0.03] border-white/10 surface-panel btn-3d">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun" aria-hidden="true" id="themeIcon">
+<circle cx="12" cy="12" r="4"></circle>
+<path d="M12 2v2"></path>
+<path d="M12 20v2"></path>
+<path d="m4.93 4.93 1.41 1.41"></path>
+<path d="m17.66 17.66 1.41 1.41"></path>
+<path d="M2 12h2"></path>
+<path d="M20 12h2"></path>
+<path d="m6.34 17.66-1.41 1.41"></path>
+<path d="m19.07 4.93-1.41 1.41"></path>
+</svg>
+</button>
+<button id="menuToggleBtn" aria-label="Open menu" aria-expanded="false" class="flex h-11 w-11 items-center justify-center rounded-xl border bg-white/[0.03] border-white/10 surface-panel btn-3d">
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu" aria-hidden="true">
+<path d="M4 5h16"></path>
+<path d="M4 12h16"></path>
+<path d="M4 19h16"></path>
+</svg>
+</button>
+</div>
+</header>
+
+<div id="navOverlay" class="nav-overlay"></div>
+<nav id="navDrawer" class="nav-drawer surface-panel" aria-label="Site navigation">
+<div class="nav-drawer-head">
+<span class="nav-drawer-title">Menu</span>
+<button id="navCloseBtn" class="btn-3d nav-close-btn" aria-label="Close menu">&times;</button>
+</div>
+<a href="../index.html" class="nav-drawer-link">Home</a>
+<a href="./theory.html" class="nav-drawer-link">Theory Reference</a>
+<a href="./typing.html" class="nav-drawer-link">Speed Typing</a>
+<a href="./debugger.html" class="nav-drawer-link">Debugger Arena</a>
+<a href="./quizzes.html" class="nav-drawer-link">Brain Quizzes</a>
+<a href="./analytics.html" class="nav-drawer-link">Performance Analytics</a>
+</nav>
+
+<main class="app-container">
+<a href="../index.html" class="app-back-link">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+Back to home
+</a>
+
+<div class="app-page-head">
+<div class="app-page-icon bg-emerald-500"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg></div>
+<div>
+<h1 class="app-page-title">Theory Reference</h1>
+<p class="app-page-sub">Complete C, Python &amp; Java — every example compiled and run before it made the page.</p>
+</div>
+</div>
+
+<div class="app-panel">
+<div class="app-grid-3" style="margin-bottom:0.25rem;">
+<div class="app-stat"><div class="app-stat-value">3 / 72</div><div class="app-stat-label">Chapters</div></div>
+<div class="app-stat"><div class="app-stat-value">4%</div><div class="app-stat-label">Complete</div></div>
+<div class="app-stat"><div class="app-stat-value">C</div><div class="app-stat-label">Now covering</div></div>
+</div>
+</div>
+
+<div class="app-panel chapter-toc">
+<p class="text-sm font-bold" style="margin-bottom:0.75rem;">Contents</p>
+<details open>
+<summary><span>Complete C Programming</span><span class="toc-progress">3/20</span></summary>
+<ul>
+<li class="done"><a href="#chapter-1-introduction-to-c"><span class="tick">&#10003;</span> Ch.1 — Introduction to C</a></li>
+<li class="done"><a href="#chapter-2-tokens-keywords-identifiers-constants--variables"><span class="tick">&#10003;</span> Ch.2 — Tokens, Keywords, Identifiers, Constants &amp; Variables</a></li>
+<li class="done"><a href="#chapter-3-data-types--storage-classes"><span class="tick">&#10003;</span> Ch.3 — Data Types &amp; Storage Classes</a></li>
+<li class="pending"><span class="tick">&middot;</span> Ch.4 — Operators, Expressions &amp; Type Conversion</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.5 — Input/Output &amp; Escape Sequences</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.6 — Decision Making (if / if-else / switch)</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.7 — Loops (while, do-while, for, nested)</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.8 — Jump Statements (break, continue, goto)</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.9 — Functions &amp; Recursion</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.10 — Arrays (1D, 2D, multi-dimensional)</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.11 — Strings &amp; Character Arrays</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.12 — Pointers</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.13 — Dynamic Memory Allocation</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.14 — Structures, Unions, Enums, typedef, Bit Fields</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.15 — File Handling</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.16 — Command-Line Arguments</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.17 — Preprocessor Directives &amp; Macros</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.18 — Compilation, Linking &amp; Execution</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.19 — Error Handling &amp; Undefined Behaviour</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.20 — Best Practices &amp; Interview Prep</li>
+</ul>
+</details>
+<details>
+<summary><span>Complete Python Programming</span><span class="toc-progress">0/18</span></summary>
+<ul>
+<li class="pending"><span class="tick">&middot;</span> Ch.21 — Introduction to Python</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.22 — Syntax, Variables &amp; Data Types</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.23 — Operators, I/O &amp; Formatting</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.24 — Conditional Statements &amp; Loops</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.25 — Functions, Lambda &amp; Recursion</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.26 — Modules, Packages &amp; Virtual Envs</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.27 — File Handling &amp; Exceptions</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.28 — OOP Fundamentals</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.29 — Magic Methods, Decorators, Generators</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.30 — Regex, datetime, random, collections</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.31 — JSON, CSV &amp; SQLite</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.32 — Threading, Multiprocessing &amp; Async</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.33 — GUI with Tkinter</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.34 — Networking, APIs &amp; Web Scraping</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.35 — NumPy, Pandas &amp; Matplotlib</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.36 — Data Structures &amp; Algorithms</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.37 — Memory, GC &amp; Python Internals</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.38 — Best Practices, PEP 8 &amp; Interview Prep</li>
+</ul>
+</details>
+<details>
+<summary><span>Complete Java Programming</span><span class="toc-progress">0/20</span></summary>
+<ul>
+<li class="pending"><span class="tick">&middot;</span> Ch.39 — Introduction to Java</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.40 — Class Structure, main(), Types</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.41 — Operators, I/O &amp; Control Flow</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.42 — Arrays &amp; Strings</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.43 — Methods &amp; Constructors</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.44 — Packages, Modifiers, static/final</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.45 — Inheritance &amp; Polymorphism</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.46 — Encapsulation &amp; Wrapper Classes</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.47 — Exception Handling</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.48 — Collections Framework &amp; Generics</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.49 — Enums, Annotations, Inner Classes</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.50 — Threads &amp; Synchronization</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.51 — Networking &amp; Sockets</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.52 — File Handling &amp; Serialization</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.53 — GUI: Swing &amp; JavaFX</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.54 — Lambdas &amp; Streams</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.55 — JDBC &amp; Database Connectivity</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.56 — Memory, GC &amp; JVM Architecture</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.57 — Design Patterns &amp; Reflection</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.58 — Best Practices &amp; Interview Prep</li>
+</ul>
+</details>
+<details>
+<summary><span>C vs Python vs Java</span><span class="toc-progress">0/14</span></summary>
+<ul>
+<li class="pending"><span class="tick">&middot;</span> Ch.59 — Variables, Types &amp; Operators — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.60 — I/O, Conditions &amp; Loops — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.61 — Functions &amp; Recursion — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.62 — Arrays, Strings &amp; Pointers — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.63 — Memory Management — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.64 — File Handling — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.65 — OOP — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.66 — Exception Handling — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.67 — Collections &amp; Libraries — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.68 — Compilation &amp; Performance — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.69 — Multithreading — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.70 — Data Structures &amp; Algorithms — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.71 — Projects &amp; Best Practices — Compared</li>
+<li class="pending"><span class="tick">&middot;</span> Ch.72 — Master Interview Question Bank</li>
+</ul>
+</details>
+</div>
+
+<div class="app-panel theory-content">
+<h1 id="chapter-1-introduction-to-c">Chapter 1: Introduction to C</h1>
+<h2 id="11-definition--what-is-c">1.1 Definition — What is C?</h2>
+<p><strong>C</strong> is a general-purpose, procedural, statically-typed, compiled programming language. "Procedural" means a C program is built from a sequence of instructions organized into functions; "statically-typed" means every variable's type is fixed at compile time; "compiled" means source code is translated into machine code by a compiler <em>before</em> the program runs, rather than being interpreted line-by-line.</p>
+<h2 id="12-history-of-c">1.2 History of C</h2>
+<ul>
+<li><strong>1969–1973</strong>: Dennis Ritchie developed C at Bell Labs, evolving it from an earlier language called B (itself derived from BCPL).</li>
+<li><strong>Purpose at creation</strong>: C was built to rewrite the UNIX operating system, which had originally been written in assembly language. This is why C gives programmers low-level control (like assembly) while still being readable (like a high-level language).</li>
+<li><strong>1978</strong>: Brian Kernighan and Dennis Ritchie published <em>The C Programming Language</em>, which became the de facto specification until an official standard existed.</li>
+<li><strong>1989/1990</strong>: The language was standardized as <strong>ANSI C / C89</strong> (and ISO C90 internationally).</li>
+<li><strong>Later standards</strong>: C99, C11, C17, C23 each added features (like <code>//</code> comments, <code>bool</code>, variable-length arrays, improved Unicode support) while preserving backward compatibility.</li>
+</ul>
+<blockquote class="callout callout-note">
+<p>📝 <strong>Note:</strong> C is often called the <strong>"mother language"</strong> of programming because compilers/interpreters for many later languages (C++, Java, Python's CPython, PHP, Perl) were themselves written in C, and those languages borrowed C's syntax.</p>
+</blockquote>
+<h2 id="13-purpose--why-c-exists">1.3 Purpose — Why C Exists</h2>
+<p>Before C, systems programmers had to choose between:</p>
+<ul>
+<li><strong>Assembly language</strong> — fast and gives full hardware control, but unreadable, error-prone, and not portable between CPU architectures.</li>
+<li><strong>High-level languages of the time</strong> — easier to read, but too slow and too abstracted from hardware for operating-system work.</li>
+</ul>
+<p>C was designed to sit in the middle: close enough to hardware to manipulate memory directly (via pointers), yet with structured, readable syntax. This is why C is called a <strong>middle-level language</strong>.</p>
+<h2 id="14-features-of-c">1.4 Features of C</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Simplicity</td>
+<td>Small set of keywords (32 in the original standard)</td>
+</tr>
+<tr class="even">
+<td>Portability</td>
+<td>The same C source compiles on different machines/OSes with little or no change</td>
+</tr>
+<tr class="odd">
+<td>Speed</td>
+<td>Compiles directly to native machine code — no interpreter overhead</td>
+</tr>
+<tr class="even">
+<td>Structured</td>
+<td>Code is organized into functions and blocks, not just jumps</td>
+</tr>
+<tr class="odd">
+<td>Low-level access</td>
+<td>Pointers let you read/write memory addresses directly</td>
+</tr>
+<tr class="even">
+<td>Rich operator set</td>
+<td>Bitwise, logical, arithmetic, relational operators built in</td>
+</tr>
+<tr class="odd">
+<td>Extensible</td>
+<td>New functionality is added via libraries, not new language syntax</td>
+</tr>
+<tr class="even">
+<td>Recursion</td>
+<td>Functions can call themselves</td>
+</tr>
+</tbody>
+</table>
+<h2 id="15-advantages-of-c">1.5 Advantages of C</h2>
+<ul>
+<li>Extremely fast execution — close to hardware, minimal runtime overhead.</li>
+<li>Full manual control over memory (allocate/free exactly what you need).</li>
+<li>Forms the foundation for learning virtually every other language's concepts.</li>
+<li>Huge legacy codebase and library ecosystem (most OS-level APIs are exposed as C functions).</li>
+<li>Portable across architectures with a standards-compliant compiler.</li>
+</ul>
+<h2 id="16-disadvantages-of-c">1.6 Disadvantages of C</h2>
+<ul>
+<li>No built-in object-oriented support (no classes, inheritance, etc.).</li>
+<li>No automatic memory management — the programmer must free everything manually, which is a major source of bugs (memory leaks, dangling pointers).</li>
+<li>No built-in exception handling — errors are typically reported through return codes.</li>
+<li>No bounds checking on arrays — writing past the end of an array is legal C (and dangerous).</li>
+<li>Weaker standard library than modern languages (no built-in dynamic string type, hash maps, etc.).</li>
+</ul>
+<h2 id="17-applications-of-c">1.7 Applications of C</h2>
+<ul>
+<li><strong>Operating systems</strong>: The Linux kernel, large parts of Windows, and macOS/iOS's XNU kernel are written in C.</li>
+<li><strong>Embedded systems &amp; IoT</strong>: Microcontroller firmware (Arduino's core libraries are C/C++).</li>
+<li><strong>Databases</strong>: The cores of MySQL, PostgreSQL, SQLite are written in C.</li>
+<li><strong>Language runtimes</strong>: CPython (the standard Python interpreter) and parts of the JVM are implemented in C.</li>
+<li><strong>Device drivers</strong>, compilers, and network stacks.</li>
+</ul>
+<h2 id="18-structure-of-a-c-program">1.8 Structure of a C Program</h2>
+<p>Every C program follows the same skeleton:</p>
+<pre><code class="language-c">[Preprocessor Directives]      // e.g. #include, #define
+[Global Declarations]          // global variables, function prototypes
+
+int main(void) {
+    [Local Declarations]       // variables used only inside main
+    [Statements]                // the actual instructions
+    return 0;                   // exit status to the operating system
+}
+
+[User-Defined Functions]        // other functions, if any</code></pre>
+<h3 id="step-by-step-the-hello-world-program">Step-by-step: the "Hello, World!" program</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    printf(&quot;Hello, World!\n&quot;);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Hello, World!</code></pre>
+<p>Line by line:</p>
+<ol type="1">
+<li><code>#include &lt;stdio.h&gt;</code> — a <strong>preprocessor directive</strong>. Before compilation, this line is replaced with the contents of the Standard Input/Output header file, which declares <code>printf</code>. Without it, using <code>printf</code> would trigger a compiler error/warning.</li>
+<li><code>int main(void)</code> — every C program must have exactly one <code>main</code> function; it's the entry point the operating system calls to start the program. <code>int</code> means it returns an integer exit status; <code>void</code> means it takes no arguments.</li>
+<li><code>{</code> — opens the function body.</li>
+<li><code>printf("Hello, World!\n");</code> — a <strong>statement</strong>: a function call followed by a semicolon. <code>\n</code> is an escape sequence for a newline.</li>
+<li><code>return 0;</code> — sends exit status <code>0</code> back to the operating system, which by convention means "the program finished successfully."</li>
+<li><code>}</code> — closes the function body.</li>
+</ol>
+<h3 id="memory-representation-how-a-compiled-c-program-sits-in-memory">Memory representation: how a compiled C program sits in memory</h3>
+<p>When you run a compiled C program, the operating system loads it into a process with this general layout:</p>
+<pre><code>High Address
++-----------------------+
+|         Stack          |  &lt;- function calls, local variables (grows downward)
+|           |             |
+|           v             |
++-----------------------+
+|                        |
+|     (free space)       |
+|                        |
++-----------------------+
+|           ^             |
+|           |             |
+|         Heap            |  &lt;- malloc/calloc/realloc memory (grows upward)
++-----------------------+
+|      BSS Segment        |  &lt;- uninitialized global/static variables
++-----------------------+
+|      Data Segment       |  &lt;- initialized global/static variables
++-----------------------+
+|      Text/Code Segment  |  &lt;- the compiled machine instructions (read-only)
++-----------------------+
+Low Address</code></pre>
+<p>This model matters throughout C: local variables live on the <strong>stack</strong> and disappear when a function returns; <code>malloc</code>-ed memory lives on the <strong>heap</strong> and persists until you <code>free</code> it (Chapter 13); global variables live in the <strong>data/BSS</strong> segments for the entire life of the program.</p>
+<h2 id="19-common-mistakes-chapter-1">1.9 Common Mistakes (Chapter 1)</h2>
+<ul>
+<li>Forgetting the semicolon at the end of a statement.</li>
+<li>Writing <code>Main</code> or <code>MAIN</code> instead of <code>main</code> — C is case-sensitive.</li>
+<li>Forgetting <code>#include &lt;stdio.h&gt;</code> and then using <code>printf</code>.</li>
+<li>Mismatched <code>{ }</code> braces, especially in longer programs.</li>
+<li>Forgetting <code>return 0;</code> (most compilers allow this and assume 0, but it's poor practice to omit it).</li>
+</ul>
+<h2 id="110-interview-questions-chapter-1">1.10 Interview Questions (Chapter 1)</h2>
+<p><strong>Q1: Why is C called a "middle-level" language?</strong> Because it combines low-level features (direct memory access via pointers, bit manipulation) with high-level structured-programming constructs (functions, loops, conditionals).</p>
+<p><strong>Q2: Why is C called the "mother language"?</strong> Because compilers or interpreters for many later languages (C++, Java's JVM components, Python's CPython, PHP) were themselves written in C, and those languages inherited much of C's syntax.</p>
+<p><strong>Q3: What is the difference between a compiler and an interpreter, and which does C use?</strong> A compiler translates the entire source file into machine code before execution (producing a standalone executable); an interpreter reads and executes source code line by line at runtime. C uses a compiler.</p>
+<p><strong>Q4: Why must every C program have a <code>main()</code> function?</strong> Because <code>main</code> is the fixed entry point the operating system's loader calls to begin execution — without it, the OS has no defined place to start running the program.</p>
+<p><strong>Q5: What is the difference between C and C++?</strong> C is purely procedural with no built-in object-oriented features; C++ is a superset of C that adds classes, objects, inheritance, templates, and exception handling while remaining largely backward-compatible with C syntax.</p>
+<h2 id="111-practice-questions-chapter-1">1.11 Practice Questions (Chapter 1)</h2>
+<ol type="1">
+<li>Write a C program that prints your name and course on two separate lines using two separate <code>printf</code> statements.</li>
+<li>What happens if you remove <code>return 0;</code> from a C program? Try it and observe whether it still compiles.</li>
+<li>Name two real-world software systems written in C (other than the ones listed above).</li>
+<li>Explain, in your own words, why C programs need to be compiled before they can run.</li>
+</ol>
+<h2 id="112-best-practices-chapter-1">1.12 Best Practices (Chapter 1)</h2>
+<blockquote class="callout callout-tip">
+<p>💡 <strong>Tip:</strong> Always include <code>return 0;</code> explicitly, even though many compilers infer it.</p>
+</blockquote>
+<blockquote class="callout callout-tip">
+<p>💡 <strong>Tip:</strong> Use <code>int main(void)</code> rather than <code>int main()</code> — <code>void</code> explicitly states "no parameters," which avoids ambiguity in older compilers.</p>
+</blockquote>
+<ul>
+<li>Write one clear comment above any non-obvious block of code.</li>
+<li>Keep indentation consistent (most style guides use 4 spaces).</li>
+<li>Include only the headers you actually use.</li>
+</ul>
+<h2 id="chapter-1-summary">Chapter 1 Summary</h2>
+<p>C is a compiled, procedural, middle-level language created in 1972 to build UNIX. It trades automatic safety nets (garbage collection, bounds checking) for speed and direct memory control, which is why it still underlies most operating systems, databases, and language runtimes today. Every C program follows the same skeleton: preprocessor directives, optional global declarations, a mandatory <code>main()</code> function, and optional user-defined functions.</p>
+<h2 id="mini-quiz--chapter-1">Mini Quiz — Chapter 1</h2>
+<ol type="1">
+<li>Who created C, and at which company?</li>
+<li>What does the <code>#include &lt;stdio.h&gt;</code> line actually do before compilation?</li>
+<li>Name one advantage and one disadvantage of C's manual memory management.</li>
+<li>In the memory layout diagram, which segment holds a variable declared with <code>malloc</code>?</li>
+</ol>
+<p><em>(Answers: 1 — Dennis Ritchie, Bell Labs. 2 — the preprocessor replaces it with the contents of the stdio.h header file. 3 — advantage: full control/speed; disadvantage: manual <code>free()</code> required, risk of leaks. 4 — the Heap.)</em></p>
+<hr />
+<h1 id="chapter-2-tokens-keywords-identifiers-constants--variables">Chapter 2: Tokens, Keywords, Identifiers, Constants &amp; Variables</h1>
+<h2 id="21-tokens">2.1 Tokens</h2>
+<p><strong>Definition:</strong> A token is the smallest individual unit in a line of C source code that the compiler recognizes as meaningful — the compiler breaks your entire program down into a stream of tokens before it does anything else.</p>
+<p><strong>Types of tokens in C:</strong></p>
+<ol type="1">
+<li>Keywords (e.g., <code>int</code>, <code>return</code>)</li>
+<li>Identifiers (e.g., <code>age</code>, <code>main</code>)</li>
+<li>Constants (e.g., <code>20</code>, <code>'A'</code>)</li>
+<li>String literals (e.g., <code>"Hello"</code>)</li>
+<li>Operators (e.g., <code>+</code>, <code>=</code>)</li>
+<li>Special symbols / punctuators (e.g., <code>{</code>, <code>}</code>, <code>;</code>, <code>(</code>, <code>)</code>)</li>
+</ol>
+<p><strong>Example:</strong> the line <code>int age = 20;</code> breaks into 5 tokens: <code>int</code> <code>age</code> <code>=</code> <code>20</code> <code>;</code></p>
+<h2 id="22-keywords">2.2 Keywords</h2>
+<p><strong>Definition:</strong> Keywords are reserved words with a predefined meaning to the compiler. They cannot be used as variable, function, or any other identifier names.</p>
+<p><strong>The 32 original C keywords:</strong></p>
+<pre><code>auto      break     case      char      const     continue  default   do
+double    else      enum      extern    float     for       goto      if
+int       long      register  return    short     signed    sizeof    static
+struct    switch    typedef   union     unsigned  void      volatile  while</code></pre>
+<blockquote class="callout callout-note">
+<p>📝 <strong>Note:</strong> Later standards added more reserved words — C99 added <code>inline</code>, <code>restrict</code>, <code>_Bool</code>, <code>_Complex</code>, <code>_Imaginary</code>; C11 added <code>_Alignas</code>, <code>_Alignof</code>, <code>_Atomic</code>, <code>_Generic</code>, <code>_Noreturn</code>, <code>_Static_assert</code>, <code>_Thread_local</code>.</p>
+</blockquote>
+<p><strong>Rules:</strong> always lowercase, cannot be redefined or used as identifiers, each has one fixed grammatical role.</p>
+<h2 id="23-identifiers">2.3 Identifiers</h2>
+<p><strong>Definition:</strong> An identifier is the name a programmer gives to a variable, function, array, structure, or any other user-defined item.</p>
+<p><strong>Naming rules:</strong></p>
+<ul>
+<li>Must begin with a letter (A–Z, a–z) or an underscore <code>_</code>.</li>
+<li>Remaining characters may be letters, digits, or underscores.</li>
+<li>Cannot be a keyword.</li>
+<li>Case-sensitive: <code>age</code>, <code>Age</code>, and <code>AGE</code> are three different identifiers.</li>
+<li>No spaces or special characters (<code>@</code>, <code>-</code>, <code>%</code>, etc.) allowed.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Identifier</th>
+<th>Valid?</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>age</code></td>
+<td>✅</td>
+<td>starts with a letter</td>
+</tr>
+<tr class="even">
+<td><code>_count</code></td>
+<td>✅</td>
+<td>starts with underscore</td>
+</tr>
+<tr class="odd">
+<td><code>student1</code></td>
+<td>✅</td>
+<td>letters + digit, doesn't start with digit</td>
+</tr>
+<tr class="even">
+<td><code>1student</code></td>
+<td>❌</td>
+<td>cannot start with a digit</td>
+</tr>
+<tr class="odd">
+<td><code>int</code></td>
+<td>❌</td>
+<td>reserved keyword</td>
+</tr>
+<tr class="even">
+<td><code>first-name</code></td>
+<td>❌</td>
+<td>hyphen is not allowed</td>
+</tr>
+<tr class="odd">
+<td><code>first name</code></td>
+<td>❌</td>
+<td>spaces are not allowed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="24-constants">2.4 Constants</h2>
+<p><strong>Definition:</strong> A constant is a value that cannot change during program execution.</p>
+<p><strong>Types of constants:</strong></p>
+<ul>
+<li>Integer constants: <code>10</code>, <code>-5</code>, <code>0x1A</code> (hex), <code>012</code> (octal)</li>
+<li>Floating-point constants: <code>3.14</code>, <code>2.5e3</code></li>
+<li>Character constants: <code>'A'</code>, <code>'9'</code>, <code>'\n'</code></li>
+<li>String constants: <code>"Hello"</code></li>
+<li>Enumeration constants: named integer constants defined with <code>enum</code> (Chapter 14)</li>
+</ul>
+<p><strong>Two ways to define a constant in C:</strong></p>
+<pre><code class="language-c">const int MAX_MARKS = 100;   // (1) the const keyword
+#define PI 3.14159            // (2) a preprocessor macro</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Aspect</th>
+<th><code>const</code></th>
+<th><code>#define</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Processed by</td>
+<td>Compiler</td>
+<td>Preprocessor (before compilation)</td>
+</tr>
+<tr class="even">
+<td>Type checking</td>
+<td>Yes — has a real type</td>
+<td>No — pure text substitution</td>
+</tr>
+<tr class="odd">
+<td>Memory</td>
+<td>Normally allocated</td>
+<td>None — text is replaced before compiling</td>
+</tr>
+<tr class="even">
+<td>Scope</td>
+<td>Follows normal block/file scope</td>
+<td>Active everywhere after the <code>#define</code> line</td>
+</tr>
+<tr class="odd">
+<td>Visible to a debugger</td>
+<td>Yes</td>
+<td>No — already substituted away</td>
+</tr>
+</tbody>
+</table>
+<h2 id="25-variables">2.5 Variables</h2>
+<p><strong>Definition:</strong> A variable is a named location in memory that holds a value which <em>can</em> change during program execution.</p>
+<p><strong>Declaration vs. initialization:</strong></p>
+<pre><code class="language-c">int age;        // declaration — reserves memory, value is garbage/indeterminate
+int age = 20;    // initialization — declaration + an initial value in one step</code></pre>
+<p><strong>Purpose:</strong> variables let a program store, retrieve, and manipulate data by name instead of by raw memory address.</p>
+<p><strong>Memory representation:</strong> every variable has an <strong>address</strong> (where it lives in memory) and a <strong>size</strong> (how many bytes it occupies, determined by its type). You can view both:</p>
+<pre><code class="language-c">int age = 20;
+printf(&quot;Value: %d\n&quot;, age);
+printf(&quot;Address: %p\n&quot;, (void*)&amp;age);
+printf(&quot;Size: %zu bytes\n&quot;, sizeof(age));</code></pre>
+<p>Conceptually, <code>age</code> sits in memory like this (the exact address changes every run — this is illustrative):</p>
+<pre><code>Address:  0x7ffee23a1a4c  0x...4d  0x...4e  0x...4f
+Bytes:         14h            00h      00h      00h      &lt;- little-endian storage of 20</code></pre>
+<p><strong>Naming rules:</strong> identical to identifier rules in §2.3.</p>
+<h2 id="26-program-examples">2.6 Program Examples</h2>
+<h3 id="beginner-example-1--declaring-and-printing-variables-of-different-types">Beginner Example 1 — Declaring and printing variables of different types</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    int age = 20;
+    float height = 5.9;
+    char grade = &#39;A&#39;;
+
+    printf(&quot;Age: %d\n&quot;, age);
+    printf(&quot;Height: %.1f\n&quot;, height);
+    printf(&quot;Grade: %c\n&quot;, grade);
+
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Age: 20
+Height: 5.9
+Grade: A</code></pre>
+<p><em>Line-by-line:</em> three variables of different types are declared and initialized in one line each; each <code>printf</code> uses the format specifier matching its type (<code>%d</code> for int, <code>%.1f</code> for a float rounded to one decimal, <code>%c</code> for a single character). <strong>Complexity:</strong> O(1) time and space — fixed number of operations regardless of input.</p>
+<h3 id="beginner-example-2--multiple-declaration-and-arithmetic">Beginner Example 2 — Multiple declaration and arithmetic</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    int a = 5, b = 10, sum;
+    sum = a + b;
+    printf(&quot;a = %d, b = %d\n&quot;, a, b);
+    printf(&quot;Sum = %d\n&quot;, sum);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>a = 5, b = 10
+Sum = 15</code></pre>
+<p><em>Line-by-line:</em> <code>a</code>, <code>b</code>, and <code>sum</code> are declared in a single statement (a comma-separated list) to reduce repetition; <code>sum</code> is left uninitialized until it's assigned the result of <code>a + b</code>. <strong>Complexity:</strong> O(1).</p>
+<h3 id="beginner-example-3--swapping-two-variables-with-a-temporary-variable">Beginner Example 3 — Swapping two variables with a temporary variable</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    int x = 10, y = 20, temp;
+    printf(&quot;Before swap: x = %d, y = %d\n&quot;, x, y);
+    temp = x;
+    x = y;
+    y = temp;
+    printf(&quot;After swap: x = %d, y = %d\n&quot;, x, y);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Before swap: x = 10, y = 20
+After swap: x = 20, y = 10</code></pre>
+<p><em>Line-by-line:</em> the classic three-step swap — <code>temp</code> holds <code>x</code>'s original value so it isn't lost when <code>x</code> is overwritten by <code>y</code>, then <code>y</code> receives what <code>temp</code> saved. <strong>Complexity:</strong> O(1).</p>
+<h3 id="intermediate-example-1--const-and-define-together">Intermediate Example 1 — <code>const</code> and <code>#define</code> together</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#define PI 3.14159
+
+int main(void) {
+    const int MAX_MARKS = 100;
+    float radius = 5.0;
+    float area;
+
+    area = PI * radius * radius;
+
+    printf(&quot;Max marks (const): %d\n&quot;, MAX_MARKS);
+    printf(&quot;PI (macro): %.5f\n&quot;, PI);
+    printf(&quot;Area of circle: %.2f\n&quot;, area);
+
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Max marks (const): 100
+PI (macro): 3.14159
+Area of circle: 78.54</code></pre>
+<p><em>Line-by-line:</em> <code>PI</code> is substituted as literal text by the preprocessor <em>before</em> compilation even starts; <code>MAX_MARKS</code> is a real, typed, compiler-checked constant. Both behave the same for reading, but see §2.4's table for how differently they're processed.</p>
+<h3 id="intermediate-example-2--the-sizeof-operator">Intermediate Example 2 — the <code>sizeof</code> operator</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    int i = 10;
+    float f = 3.14f;
+    double d = 3.14159;
+    char c = &#39;A&#39;;
+
+    printf(&quot;Size of int: %zu bytes\n&quot;, sizeof(i));
+    printf(&quot;Size of float: %zu bytes\n&quot;, sizeof(f));
+    printf(&quot;Size of double: %zu bytes\n&quot;, sizeof(d));
+    printf(&quot;Size of char: %zu bytes\n&quot;, sizeof(c));
+
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Size of int: 4 bytes
+Size of float: 4 bytes
+Size of double: 8 bytes
+Size of char: 1 bytes</code></pre>
+<p><em>Line-by-line:</em> <code>sizeof</code> is a compile-time operator (not a function call) that returns the number of bytes a type/variable occupies; <code>%zu</code> is the correct format specifier for the <code>size_t</code> type it returns. These exact sizes are standard on mainstream 64-bit systems but are not guaranteed by the C standard — always confirm with <code>sizeof</code> rather than hardcoding sizes.</p>
+<h3 id="intermediate-example-3--global-vs-local-variables-preview">Intermediate Example 3 — Global vs. local variables (preview)</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int globalVar = 100;
+
+void display(void) {
+    int localVar = 50;
+    printf(&quot;Inside display() -&gt; globalVar = %d, localVar = %d\n&quot;, globalVar, localVar);
+}
+
+int main(void) {
+    printf(&quot;Inside main() -&gt; globalVar = %d\n&quot;, globalVar);
+    display();
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Inside main() -&gt; globalVar = 100
+Inside display() -&gt; globalVar = 100, localVar = 50</code></pre>
+<p><em>Line-by-line:</em> <code>globalVar</code> is declared outside any function, so every function in the file can see it; <code>localVar</code> exists only inside <code>display()</code> and would cause a compile error if referenced from <code>main()</code>. Storage classes and full scope rules are covered in Chapter 3.</p>
+<h3 id="advanced-example-1--case-sensitivity-and-block-scope-shadowing">Advanced Example 1 — Case sensitivity and block scope shadowing</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int count = 5;
+
+int main(void) {
+    int Count = 10;
+    int count2 = 15;
+
+    {
+        int count = 99;
+        printf(&quot;Inner block count = %d\n&quot;, count);
+    }
+
+    printf(&quot;Global count = %d\n&quot;, count);
+    printf(&quot;Count = %d\n&quot;, Count);
+    printf(&quot;count2 = %d\n&quot;, count2);
+
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Inner block count = 99
+Global count = 5
+Count = 10
+count2 = 15</code></pre>
+<p><em>Line-by-line:</em> <code>count</code> and <code>Count</code> are different identifiers because C is case-sensitive; inside the <code>{ }</code> block, a new <code>count</code> is declared that <strong>shadows</strong> (temporarily hides) the global <code>count</code> — only within that block. Once the block ends, <code>count</code> refers to the global variable again.</p>
+<h3 id="advanced-example-2--common-compile-time-errors-with-identifiers-and-constants">Advanced Example 2 — Common compile-time errors with identifiers and constants</h3>
+<p>These two programs are intentionally broken to show real compiler errors you will eventually hit.</p>
+<p><strong>Error case A — modifying a <code>const</code> variable:</strong></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    const int MAX = 10;
+    MAX = 20;
+    printf(&quot;%d\n&quot;, MAX);
+    return 0;
+}</code></pre>
+<p><strong>Actual GCC error:</strong></p>
+<pre><code>ex10_const_error.c: In function &#39;main&#39;:
+ex10_const_error.c:5:9: error: assignment of read-only variable &#39;MAX&#39;
+    5 |     MAX = 20;
+      |         ^</code></pre>
+<p><strong>Error case B — using a keyword as an identifier:</strong></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    int float = 10;
+    printf(&quot;%d\n&quot;, float);
+    return 0;
+}</code></pre>
+<p><strong>Actual GCC error:</strong></p>
+<pre><code>ex11_keyword_error.c: In function &#39;main&#39;:
+ex11_keyword_error.c:4:9: error: two or more data types in declaration specifiers
+    4 |     int float = 10;
+      |         ^~~~~
+ex11_keyword_error.c:4:15: error: expected identifier or &#39;(&#39; before &#39;=&#39; token
+    4 |     int float = 10;
+      |               ^</code></pre>
+<p><em>Why this matters:</em> <code>const</code> is a compile-time contract, not just documentation — the compiler actively rejects any code path that reassigns it. Keywords are so reserved that the compiler doesn't even see <code>float</code> as "a bad variable name" — it sees "the start of a type," which is why the error message talks about "two or more data types" rather than "invalid identifier."</p>
+<h2 id="27-common-mistakes-chapter-2">2.7 Common Mistakes (Chapter 2)</h2>
+<ul>
+<li>Trying to reassign a <code>const</code> variable.</li>
+<li>Using a keyword as a variable name.</li>
+<li>Forgetting that identifiers are case-sensitive (<code>Total</code> and <code>total</code> are different variables).</li>
+<li>Using an uninitialized variable and assuming it starts at <code>0</code> — its value is indeterminate ("garbage") until you assign one.</li>
+<li>Confusing <code>#define</code> (no type, no scope, pure substitution) with <code>const</code> (typed, scoped, real memory).</li>
+</ul>
+<h2 id="28-interview-questions-chapter-2">2.8 Interview Questions (Chapter 2)</h2>
+<p><strong>Q1: What is the difference between a token and a keyword?</strong> A token is any smallest meaningful unit the compiler recognizes (which includes keywords, identifiers, constants, operators, and punctuation); a keyword is just one specific <em>category</em> of token — a reserved word with a fixed meaning.</p>
+<p><strong>Q2: Can you use a keyword as a variable name? Why or why not?</strong> No — keywords are reserved by the compiler grammar itself, so using one as an identifier causes a syntax error, as shown in Advanced Example 2.</p>
+<p><strong>Q3: What's the real difference between <code>const</code> and <code>#define</code>?</strong> <code>const</code> creates a typed, scoped, compiler-checked, debuggable variable; <code>#define</code> performs blind text substitution before compilation even begins, with no type safety and no scope.</p>
+<p><strong>Q4: What value does an uninitialized local variable hold in C?</strong> An indeterminate ("garbage") value — whatever bits happened to already be at that memory address. C does not automatically zero out local variables (unlike global/static variables, which are zero-initialized by default).</p>
+<p><strong>Q5: Is C case-sensitive?</strong> Yes — <code>Age</code>, <code>age</code>, and <code>AGE</code> are three completely distinct identifiers.</p>
+<h2 id="29-practice-questions-chapter-2">2.9 Practice Questions (Chapter 2)</h2>
+<ol type="1">
+<li>Write a program that declares a <code>const double</code> for the value of gravity (9.8) and uses it to compute weight from a given mass.</li>
+<li>Predict the output of a program where a variable is redeclared inside a nested block with a different value, then print it both inside and outside the block.</li>
+<li>List three valid and three invalid identifier names of your own, and explain why each invalid one fails.</li>
+<li>What is the output of <code>printf("%zu\n", sizeof(int));</code> on your own machine? Compile and check — is it the same as this chapter's result?</li>
+</ol>
+<h2 id="210-best-practices-chapter-2">2.10 Best Practices (Chapter 2)</h2>
+<blockquote class="callout callout-warning">
+<p>⚠️ <strong>Warning:</strong> Never rely on the "leftover" value of an uninitialized variable — always initialize before use.</p>
+</blockquote>
+<blockquote class="callout callout-tip">
+<p>💡 <strong>Tip:</strong> Prefer <code>const</code> over <code>#define</code> for typed constants in modern C — you get type checking and debugger visibility for free.</p>
+</blockquote>
+<ul>
+<li>Use <code>UPPER_CASE</code> naming for macro constants (<code>#define MAX_SIZE 100</code>) so they're visually distinct from ordinary variables.</li>
+<li>Give variables descriptive names (<code>studentAge</code>, not <code>x</code>) once programs grow past trivial examples.</li>
+<li>Declare variables close to where they're first used, not all at the top of a long function.</li>
+</ul>
+<h2 id="chapter-2-summary">Chapter 2 Summary</h2>
+<p>Every C program is a stream of tokens: keywords, identifiers, constants, strings, operators, and punctuation. Identifiers name the things you create and must follow strict rules (start with a letter/underscore, no keywords, case-sensitive). Constants can be defined as typed <code>const</code> variables or as untyped <code>#define</code> macros — they behave similarly when read but are processed completely differently under the hood. Variables are named, typed memory locations whose values can change; each has both an address and a size that can be inspected directly.</p>
+<h2 id="mini-quiz--chapter-2">Mini Quiz — Chapter 2</h2>
+<ol type="1">
+<li>Which of these are valid identifiers: <code>2fast</code>, <code>_temp</code>, <code>my-var</code>, <code>switch</code>?</li>
+<li>What's the key difference in <em>when</em> <code>const</code> and <code>#define</code> are processed?</li>
+<li>What actually happens if you try to compile <code>const int x = 5; x = 10;</code>?</li>
+<li>True or false: local variables in C are automatically initialized to zero.</li>
+</ol>
+<p><em>(Answers: 1 — only <code>_temp</code> is valid. 2 — <code>const</code> is handled by the compiler at compile time; <code>#define</code> is handled by the preprocessor before compilation. 3 — a compile-time error: "assignment of read-only variable." 4 — False; only global/static variables are zero-initialized by default.)</em></p><h1 id="chapter-3-data-types--storage-classes">Chapter 3: Data Types &amp; Storage Classes</h1>
+<h2 id="31-data-types">3.1 Data Types</h2>
+<p><strong>Definition:</strong> A data type tells the compiler what kind of value a variable holds, how many bytes to reserve for it, and what operations are valid on it.</p>
+<p><strong>Purpose — why they exist:</strong> Without types, the compiler wouldn't know whether the bits at a memory address mean the number <code>65</code>, the character <code>'A'</code>, or something else entirely — types are what let the same underlying bytes be interpreted correctly.</p>
+<h3 id="categories-of-data-types-in-c">Categories of data types in C</h3>
+<ol type="1">
+<li><strong>Fundamental (basic) types</strong> — <code>int</code>, <code>char</code>, <code>float</code>, <code>double</code>, <code>void</code></li>
+<li><strong>Derived types</strong> — arrays, pointers, functions (built from fundamental types; covered in Chapters 10–12)</li>
+<li><strong>User-defined types</strong> — <code>struct</code>, <code>union</code>, <code>enum</code>, <code>typedef</code> (Chapter 14)</li>
+</ol>
+<h3 id="fundamental-types-sizes-and-ranges">Fundamental types, sizes, and ranges</h3>
+<blockquote class="callout callout-note">
+<p>📝 <strong>Note:</strong> The C standard only guarantees <em>minimum</em> ranges — exact sizes are implementation-defined. The table below reflects this system (64-bit Linux, GCC 13), confirmed with <code>sizeof</code> rather than assumed.</p>
+</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Size (this system)</th>
+<th>Typical Range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>char</code></td>
+<td>1 byte</td>
+<td>-128 to 127</td>
+</tr>
+<tr class="even">
+<td><code>short int</code></td>
+<td>2 bytes</td>
+<td>-32,768 to 32,767</td>
+</tr>
+<tr class="odd">
+<td><code>int</code></td>
+<td>4 bytes</td>
+<td>-2,147,483,648 to 2,147,483,647</td>
+</tr>
+<tr class="even">
+<td><code>long int</code></td>
+<td>8 bytes</td>
+<td>±9.2 × 10¹⁸</td>
+</tr>
+<tr class="odd">
+<td><code>long long int</code></td>
+<td>8 bytes</td>
+<td>±9.2 × 10¹⁸</td>
+</tr>
+<tr class="even">
+<td><code>float</code></td>
+<td>4 bytes</td>
+<td>~6–7 significant digits</td>
+</tr>
+<tr class="odd">
+<td><code>double</code></td>
+<td>8 bytes</td>
+<td>~15–16 significant digits</td>
+</tr>
+<tr class="even">
+<td><code>void</code></td>
+<td>—</td>
+<td>represents "no type" / "no value"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="type-modifiers">Type modifiers</h3>
+<p><code>signed</code>, <code>unsigned</code>, <code>short</code>, and <code>long</code> adjust a base type's range and sign:</p>
+<pre><code class="language-c">unsigned int age;        // 0 to 4,294,967,295 — no negative values
+signed int balance;       // signed is the default for int, rarely written explicitly
+long long int population; // extended range for very large numbers</code></pre>
+<h3 id="memory-representation">Memory representation</h3>
+<p>A <code>double</code> occupies 8 contiguous bytes storing sign, exponent, and mantissa bits per the IEEE-754 standard — this is <em>why</em> floating-point arithmetic can't represent every decimal value exactly (see the 0.1 + 0.2 example in §3.3). An <code>int</code> occupies 4 bytes in two's-complement form, which is also why a signed <code>int</code> wraps to a large <em>negative</em> number on overflow instead of just growing.</p>
+<h3 id="advantages-of-cs-type-system">Advantages of C's type system</h3>
+<ul>
+<li>Predictable memory usage — you know exactly how many bytes a variable costs.</li>
+<li>Fine-grained control (choose <code>short</code> vs <code>int</code> vs <code>long</code> based on the actual range you need).</li>
+<li>Fast — no runtime type checking overhead, unlike dynamically-typed languages.</li>
+</ul>
+<h3 id="disadvantages">Disadvantages</h3>
+<ul>
+<li>Sizes are implementation-defined, which can silently break code moved between platforms.</li>
+<li>No automatic overflow detection — wraparound happens silently.</li>
+<li>Easy to accidentally mix signed and unsigned types with surprising results (§3.3, Advanced Example 2).</li>
+</ul>
+<h2 id="32-storage-classes">3.2 Storage Classes</h2>
+<p><strong>Definition:</strong> A storage class controls three things about a variable: where it lives in memory, how long it lives (lifetime), and where in the program it's visible (scope/linkage).</p>
+<p><strong>Purpose — why they exist:</strong> Not every variable should behave the same way. Sometimes you want a variable to reset every time a function runs (the default); sometimes you want it to remember its value between calls; sometimes you want one variable shared safely across multiple files. Storage classes give you that control explicitly instead of guessing.</p>
+<h3 id="the-four-storage-classes">The four storage classes</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Storage Class</th>
+<th>Default Value</th>
+<th>Stored In</th>
+<th>Scope</th>
+<th>Lifetime</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>auto</code></td>
+<td>Garbage (indeterminate)</td>
+<td>Stack</td>
+<td>Block (local)</td>
+<td>Ends when the block exits</td>
+</tr>
+<tr class="even">
+<td><code>static</code></td>
+<td>Zero</td>
+<td>Data segment</td>
+<td>Block, or whole file if declared outside a function</td>
+<td>Entire program run</td>
+</tr>
+<tr class="odd">
+<td><code>extern</code></td>
+<td>Zero (defined elsewhere)</td>
+<td>Data segment</td>
+<td>Whole program (across files)</td>
+<td>Entire program run</td>
+</tr>
+<tr class="even">
+<td><code>register</code></td>
+<td>Garbage (indeterminate)</td>
+<td>CPU register (requested)</td>
+<td>Block (local)</td>
+<td>Ends when the block exits</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong><code>auto</code></strong> is the default for any variable declared inside a function — you almost never write it explicitly.</li>
+<li><strong><code>static</code></strong> inside a function makes a variable keep its value between calls; <strong><code>static</code></strong> on a global gives it <em>internal linkage</em>, meaning other files can't <code>extern</code> their way into it (§3.4, Intermediate Example 2).</li>
+<li><strong><code>extern</code></strong> declares that a variable is defined in another translation unit (or later in the same file) — it doesn't create storage, it just refers to storage created elsewhere.</li>
+<li><strong><code>register</code></strong> is a hint that a variable will be used heavily and should live in a CPU register rather than RAM. Modern compilers mostly optimize this automatically and ignore the hint — but the <em>restriction</em> that comes with it (you can't take a <code>register</code> variable's address) is still enforced (§3.4, Intermediate Example 3).</li>
+</ul>
+<h2 id="33-program-examples--data-types">3.3 Program Examples — Data Types</h2>
+<h3 id="beginner-example-1--fundamental-types-and-their-sizes">Beginner Example 1 — Fundamental types and their sizes</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    int i = 42;
+    char c = &#39;Z&#39;;
+    float f = 3.14f;
+    double d = 2.718281828;
+
+    printf(&quot;int:    value=%d  size=%zu bytes\n&quot;, i, sizeof(i));
+    printf(&quot;char:   value=%c  size=%zu bytes\n&quot;, c, sizeof(c));
+    printf(&quot;float:  value=%.2f  size=%zu bytes\n&quot;, f, sizeof(f));
+    printf(&quot;double: value=%.9f size=%zu bytes\n&quot;, d, sizeof(d));
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>int:    value=42  size=4 bytes
+char:   value=Z  size=1 bytes
+float:  value=3.14  size=4 bytes
+double: value=2.718281828 size=8 bytes</code></pre>
+<p><strong>Complexity:</strong> O(1). <em>Line-by-line:</em> each variable is declared with its type's matching format specifier; <code>sizeof</code> confirms the byte cost directly rather than assuming it.</p>
+<h3 id="beginner-example-2--signed-unsigned-and-char-ranges">Beginner Example 2 — Signed, unsigned, and char ranges</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+int main(void) {
+    printf(&quot;signed int range:   %d to %d\n&quot;, INT_MIN, INT_MAX);
+    printf(&quot;unsigned int range: 0 to %u\n&quot;, UINT_MAX);
+    printf(&quot;char range:         %d to %d\n&quot;, CHAR_MIN, CHAR_MAX);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>signed int range:   -2147483648 to 2147483647
+unsigned int range: 0 to 4294967295
+char range:         -128 to 127</code></pre>
+<p><em>Line-by-line:</em> <code>&lt;limits.h&gt;</code> provides these exact bounds for the current system instead of forcing you to hardcode numbers that might be wrong on another platform.</p>
+<h3 id="beginner-example-3--char-as-a-small-integer">Beginner Example 3 — char as a small integer</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    char grade = &#39;A&#39;;
+    printf(&quot;As character: %c\n&quot;, grade);
+    printf(&quot;As integer (ASCII code): %d\n&quot;, grade);
+    printf(&quot;Next letter: %c\n&quot;, grade + 1);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>As character: A
+As integer (ASCII code): 65
+Next letter: B</code></pre>
+<p><em>Line-by-line:</em> a <code>char</code> <strong>is</strong> a small integer under the hood (its ASCII/Unicode code point); <code>grade + 1</code> does real integer arithmetic, and <code>%c</code> converts the result back to a printable character.</p>
+<h3 id="intermediate-example-1--overflow-and-wraparound">Intermediate Example 1 — Overflow and wraparound</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    unsigned char uc = 255;
+    printf(&quot;Before: %u\n&quot;, uc);
+    uc = uc + 1;
+    printf(&quot;After adding 1 (wraps around): %u\n&quot;, uc);
+
+    int si = 2147483647;
+    printf(&quot;\nBefore: %d\n&quot;, si);
+    si = si + 1;
+    printf(&quot;After adding 1 (signed overflow): %d\n&quot;, si);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Before: 255
+After adding 1 (wraps around): 0
+
+Before: 2147483647
+After adding 1 (signed overflow): -2147483648</code></pre>
+<blockquote class="callout callout-warning">
+<p>⚠️ <strong>Warning:</strong> Unsigned overflow (wraparound) is well-defined by the C standard. Signed overflow is technically <strong>undefined behaviour</strong> — the <code>-2147483648</code> result shown here is what this specific compiler/hardware does, not a guarantee the standard makes. Never rely on signed overflow wrapping predictably.</p>
+</blockquote>
+<h3 id="intermediate-example-2--floating-point-precision">Intermediate Example 2 — Floating-point precision</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    double a = 0.1 + 0.2;
+    printf(&quot;0.1 + 0.2 = %.17f\n&quot;, a);
+    printf(&quot;Is it equal to 0.3? %s\n&quot;, (a == 0.3) ? &quot;yes&quot; : &quot;no&quot;);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>0.1 + 0.2 = 0.30000000000000004
+Is it equal to 0.3? no</code></pre>
+<p><em>Why:</em> 0.1 and 0.2 have no exact representation in binary floating-point (same reason 1/3 has no exact finite decimal). The tiny rounding error means direct <code>==</code> comparison of floating-point results is almost always the wrong tool — compare against a small tolerance (<code>fabs(a - b) &lt; 1e-9</code>) instead.</p>
+<h3 id="intermediate-example-3--type-modifiers-in-practice">Intermediate Example 3 — Type modifiers in practice</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+int main(void) {
+    short s = 32000;
+    long l = 123456789L;
+    long long ll = 9223372036854775807LL;
+    unsigned long long ull = 18446744073709551615ULL;
+
+    printf(&quot;short:              %hd  (size %zu)\n&quot;, s, sizeof(s));
+    printf(&quot;long:               %ld  (size %zu)\n&quot;, l, sizeof(l));
+    printf(&quot;long long:          %lld (size %zu)\n&quot;, ll, sizeof(ll));
+    printf(&quot;unsigned long long: %llu (size %zu)\n&quot;, ull, sizeof(ull));
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>short:              32000  (size 2)
+long:               123456789  (size 8)
+long long:          9223372036854775807 (size 8)
+unsigned long long: 18446744073709551615 (size 8)</code></pre>
+<p><em>Note:</em> the <code>L</code>, <code>LL</code>, and <code>ULL</code> suffixes tell the compiler the literal's type directly — without them, <code>18446744073709551615</code> would overflow a plain <code>int</code> literal.</p>
+<h3 id="advanced-example-1--implicit-conversions-and-division">Advanced Example 1 — Implicit conversions and division</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    char c = &#39;A&#39;;
+    int i = 10;
+    float f = 3.5f;
+
+    printf(&quot;char + int = %d (promoted to int)\n&quot;, c + i);
+    printf(&quot;int + float = %.2f (int promoted to float)\n&quot;, i + f);
+
+    printf(&quot;\nInteger division: 5 / 2 = %d\n&quot;, 5 / 2);
+    printf(&quot;Float division:   5.0 / 2 = %.1f\n&quot;, 5.0 / 2);
+    printf(&quot;Mixed division:   5 / 2.0 = %.1f\n&quot;, 5 / 2.0);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>char + int = 75 (promoted to int)
+int + float = 13.50 (int promoted to float)
+
+Integer division: 5 / 2 = 2
+Float division:   5.0 / 2 = 2.5
+Mixed division:   5 / 2.0 = 2.5</code></pre>
+<p><em>Line-by-line:</em> C's "usual arithmetic conversions" promote the smaller/lower-ranked type to match the larger one before the operation happens. This is also why <code>5 / 2</code> silently truncates to <code>2</code> — if <em>either</em> operand is floating-point, the whole division becomes floating-point.</p>
+<h3 id="advanced-example-2--the-signedunsigned-comparison-trap">Advanced Example 2 — The signed/unsigned comparison trap</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    int x = -1;
+    unsigned int y = 5;
+
+    if (x &lt; y) {
+        printf(&quot;-1 is less than 5\n&quot;);
+    } else {
+        printf(&quot;-1 is NOT less than 5 (x got converted to unsigned!)\n&quot;);
+    }
+
+    printf(&quot;x as unsigned: %u\n&quot;, (unsigned int)x);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>-1 is NOT less than 5 (x got converted to unsigned!)
+x as unsigned: 4294967295</code></pre>
+<p><em>Why this is a classic interview question:</em> when a signed and an unsigned value of the same rank are compared, C converts the <strong>signed value to unsigned</strong> — not the other way around. <code>-1</code> becomes <code>UINT_MAX</code> (4,294,967,295), which is definitely not less than <code>5</code>. This exact pattern has caused real security bugs (e.g., an unchecked negative length compared against an unsigned buffer size).</p>
+<h2 id="34-program-examples--storage-classes">3.4 Program Examples — Storage Classes</h2>
+<h3 id="beginner-example-1--auto-explicit-vs-default">Beginner Example 1 — <code>auto</code> (explicit vs. default)</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    auto int a = 10;
+    int b = 20;
+    printf(&quot;a = %d (explicit auto)\n&quot;, a);
+    printf(&quot;b = %d (implicit auto)\n&quot;, b);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>a = 10 (explicit auto)
+b = 20 (implicit auto)</code></pre>
+<p><em>Note:</em> <code>a</code> and <code>b</code> behave identically — <code>auto</code> is simply what every local variable already is by default, which is why nobody writes it in practice.</p>
+<h3 id="beginner-example-2--static-local-variable">Beginner Example 2 — <code>static</code> local variable</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void counter(void) {
+    static int count = 0;
+    count++;
+    printf(&quot;counter() called %d time(s)\n&quot;, count);
+}
+
+int main(void) {
+    counter();
+    counter();
+    counter();
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>counter() called 1 time(s)
+counter() called 2 time(s)
+counter() called 3 time(s)</code></pre>
+<p><em>Line-by-line:</em> a normal (<code>auto</code>) local variable would reset to <code>0</code> on every call. <code>static</code> allocates <code>count</code> once, in the data segment, so it survives between calls and remembers its last value.</p>
+<h3 id="beginner-example-3--extern-inside-a-single-file">Beginner Example 3 — <code>extern</code> inside a single file</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void showValue(void) {
+    extern int total;
+    printf(&quot;total = %d\n&quot;, total);
+}
+
+int total = 100;
+
+int main(void) {
+    showValue();
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>total = 100</code></pre>
+<p><em>Line-by-line:</em> <code>showValue</code> is defined <em>before</em> <code>total</code> in the file, so the <code>extern int total;</code> line tells the compiler "trust me, this exists somewhere — I'll use it now and you can link it later."</p>
+<h3 id="intermediate-example-1--extern-across-two-real-files">Intermediate Example 1 — <code>extern</code> across two real files</h3>
+<p><strong>helper.c</strong></p>
+<pre><code class="language-c">int sharedCount = 0;
+
+void increment(void) {
+    sharedCount++;
+}</code></pre>
+<p><strong>main.c</strong></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+extern int sharedCount;
+void increment(void);
+
+int main(void) {
+    printf(&quot;Start: %d\n&quot;, sharedCount);
+    increment();
+    increment();
+    printf(&quot;After two increments: %d\n&quot;, sharedCount);
+    return 0;
+}</code></pre>
+<p>Compiled as <code>gcc main.c helper.c -o program</code> — a genuine two-file build.</p>
+<p><strong>Output:</strong></p>
+<pre><code>Start: 0
+After two increments: 2</code></pre>
+<p><em>Why it matters:</em> this is the real reason <code>extern</code> exists — sharing one piece of state safely across multiple source files without copy-pasting the variable.</p>
+<h3 id="intermediate-example-2--static-blocks-extern-a-real-linker-error">Intermediate Example 2 — <code>static</code> blocks <code>extern</code> (a real linker error)</h3>
+<p><strong>filea.c</strong></p>
+<pre><code class="language-c">static int secret = 42;</code></pre>
+<p><strong>fileb.c</strong></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+extern int secret;
+
+int main(void) {
+    printf(&quot;%d\n&quot;, secret);
+    return 0;
+}</code></pre>
+<p>Compiling <code>gcc filea.c fileb.c -o program</code> produces a genuine linker failure:</p>
+<pre><code>/usr/bin/ld: fileb.o: in function `main&#39;:
+fileb.c:(.text+0xa): undefined reference to `secret&#39;
+collect2: error: ld returned 1 exit status</code></pre>
+<p><em>Why:</em> <code>static</code> at file scope gives a variable <strong>internal linkage</strong> — it's only visible inside the file that defines it. <code>fileb.c</code>'s <code>extern</code> promise can't be kept because, from the linker's point of view, no such symbol exists outside <code>filea.c</code>.</p>
+<h3 id="intermediate-example-3--register-and-its-real-restriction">Intermediate Example 3 — <code>register</code> and its real restriction</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main(void) {
+    register int r = 5;
+    printf(&quot;r = %d\n&quot;, r);
+    printf(&quot;r * 2 = %d\n&quot;, r * 2);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>r = 5
+r * 2 = 10</code></pre>
+<p>Using <code>r</code> normally works fine. But asking for its address —</p>
+<pre><code class="language-c">printf(&quot;address of r: %p\n&quot;, (void*)&amp;r);</code></pre>
+<p>— fails to compile, with this genuine GCC error:</p>
+<pre><code>error: address of register variable &#39;r&#39; requested</code></pre>
+<p><em>Why this surprises people:</em> many assume <code>register</code> is a purely historical, now-ignored keyword. Compilers do ignore it as a <em>performance</em> hint (they decide register allocation themselves), but the <em>language rule</em> that a <code>register</code> variable has no address is still fully enforced.</p>
+<h3 id="advanced-example-1--static-local-state-and-recursion">Advanced Example 1 — <code>static</code> local state and recursion</h3>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void countDown(int n) {
+    static int callNumber = 0;
+    callNumber++;
+    printf(&quot;Call #%d: n = %d\n&quot;, callNumber, n);
+    if (n &gt; 0) {
+        countDown(n - 1);
+    }
+}
+
+int main(void) {
+    countDown(3);
+    return 0;
+}</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Call #1: n = 3
+Call #2: n = 2
+Call #3: n = 1
+Call #4: n = 0</code></pre>
+<p><em>The subtlety:</em> <code>callNumber</code> is <strong>not</strong> re-created for each recursive call the way <code>n</code> is — there is exactly one <code>callNumber</code> shared by every level of the recursion, because <code>static</code> storage is allocated once for the whole program, not once per call frame.</p>
+<h3 id="advanced-example-2--multiple-definition-another-real-linker-error">Advanced Example 2 — Multiple definition (another real linker error)</h3>
+<p><strong>defa.c</strong></p>
+<pre><code class="language-c">int counter = 0;</code></pre>
+<p><strong>defb.c</strong></p>
+<pre><code class="language-c">int counter = 5;
+
+int main(void) {
+    return 0;
+}</code></pre>
+<p>Compiling <code>gcc defa.c defb.c -o program</code> fails:</p>
+<pre><code>/usr/bin/ld: defb.o:(.data+0x0): multiple definition of `counter&#39;;
+defa.o:(.bss+0x0): first defined here
+collect2: error: ld returned 1 exit status</code></pre>
+<p><em>Why:</em> both files <strong>define</strong> (not just declare) a global called <code>counter</code>. Modern GCC (10 and later) treats this as an error by default. The fix is simple but easy to forget on a large project: define the variable in exactly one <code>.c</code> file, and <code>extern</code>-declare it everywhere else that needs it.</p>
+<h2 id="35-common-mistakes-chapter-3">3.5 Common Mistakes (Chapter 3)</h2>
+<ul>
+<li>Assuming <code>int</code>, <code>long</code>, etc. are the same size on every platform — always confirm with <code>sizeof</code> instead of hardcoding.</li>
+<li>Comparing floating-point numbers with <code>==</code> instead of a tolerance check.</li>
+<li>Comparing a signed and unsigned value directly, not realizing the signed one gets silently converted.</li>
+<li>Relying on signed integer overflow "wrapping" — it's undefined behaviour, not a guarantee.</li>
+<li>Defining the same global variable (not just declaring it <code>extern</code>) in more than one file.</li>
+<li>Trying to take the address of a <code>register</code> variable.</li>
+</ul>
+<h2 id="36-interview-questions-chapter-3">3.6 Interview Questions (Chapter 3)</h2>
+<p><strong>Q1: What's the difference between declaration and definition for <code>extern</code> variables?</strong> A declaration (<code>extern int x;</code>) tells the compiler a variable exists and its type, without allocating storage. A definition (<code>int x;</code> at file scope) actually allocates the storage. Exactly one file should contain the definition; any other file that needs it uses an <code>extern</code> declaration.</p>
+<p><strong>Q2: Why does a <code>static</code> local variable retain its value between function calls?</strong> Because <code>static</code> variables are allocated once, in the program's data segment, for the entire run of the program — not on the stack, which is wiped every time the function returns.</p>
+<p><strong>Q3: What happens when you compare a negative <code>int</code> to an <code>unsigned int</code>?</strong> The signed value is converted to unsigned before the comparison (the "usual arithmetic conversions"), so a negative number becomes a very large positive one — often producing the opposite of the intended result.</p>
+<p><strong>Q4: Does <code>register</code> guarantee a variable lives in a CPU register?</strong> No — it's only a hint, and compilers are free to ignore it entirely for their own register-allocation decisions. What <code>register</code> <em>does</em> guarantee is that you cannot take the variable's address.</p>
+<p><strong>Q5: Why is signed integer overflow undefined behaviour but unsigned overflow isn't?</strong> The C standard defines unsigned arithmetic as modular (it must wrap at 2ⁿ), but explicitly leaves signed overflow undefined, partly because different hardware historically represented negative numbers differently (two's complement, one's complement, sign-magnitude).</p>
+<h2 id="37-practice-questions-chapter-3">3.7 Practice Questions (Chapter 3)</h2>
+<ol type="1">
+<li>Write a program that shows the size and range of every fundamental type on your own machine, and compare it to the table in §3.1.</li>
+<li>Predict, then verify, the output of comparing <code>-5 &lt; 3u</code> (a negative int against an unsigned literal).</li>
+<li>Split a program that uses a global counter into two files using <code>extern</code> correctly, and compile them together.</li>
+<li>Deliberately create a "multiple definition" linker error like Advanced Example 2, then fix it.</li>
+</ol>
+<h2 id="38-best-practices-chapter-3">3.8 Best Practices (Chapter 3)</h2>
+<blockquote class="callout callout-tip">
+<p>💡 <strong>Tip:</strong> Prefer the fixed-width types from <code>&lt;stdint.h&gt;</code> (<code>int32_t</code>, <code>uint64_t</code>, etc.) over plain <code>int</code>/<code>long</code> when the exact size genuinely matters, since plain types vary across platforms.</p>
+</blockquote>
+<blockquote class="callout callout-warning">
+<p>⚠️ <strong>Warning:</strong> Never compare floating-point values for exact equality — use a tolerance comparison instead.</p>
+</blockquote>
+<ul>
+<li>Define each global variable in exactly one <code>.c</code> file; <code>extern</code>-declare it everywhere else.</li>
+<li>Mark file-scope globals <code>static</code> unless they genuinely need to be shared across files — it prevents accidental name clashes at link time.</li>
+<li>Choose <code>unsigned</code> types deliberately (counts, sizes), not by default — mixing signed and unsigned invites the comparison trap in §3.3.</li>
+</ul>
+<h2 id="chapter-3-summary">Chapter 3 Summary</h2>
+<p>Every variable's type determines its size and how its bits are interpreted, while its storage class determines where it lives, how long it lives, and where it's visible. <code>auto</code> is the invisible default; <code>static</code> extends a variable's lifetime to the whole program (and, at file scope, restricts its visibility to that file); <code>extern</code> shares one definition safely across multiple files; <code>register</code> requests a performance optimization compilers now mostly make themselves, but its no-address-allowed rule still holds. The recurring theme across every "advanced" example in this chapter is the same: C trusts the programmer completely, which is exactly why understanding these rules — instead of relying on them "probably" being fine — matters.</p>
+<h2 id="mini-quiz--chapter-3">Mini Quiz — Chapter 3</h2>
+<ol type="1">
+<li>On a system where <code>int</code> is 4 bytes, what's the result of adding 1 to <code>INT_MAX</code>?</li>
+<li>Which storage class gives a file-scope variable internal linkage?</li>
+<li>True or false: <code>0.1 + 0.2 == 0.3</code> is guaranteed to be true in C.</li>
+<li>What error do you get if two files both <em>define</em> the same global variable without <code>static</code>?</li>
+</ol>
+<p><em>(Answers: 1 — undefined behaviour; in practice on this system it wraps to INT_MIN. 2 — <code>static</code>. 3 — False; floating-point representation makes this comparison unreliable. 4 — a linker error: "multiple definition of...".)</em></p>
+
+</div>
+
+</main>
+</div>
+
+<script src="../script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+hljs.highlightAll();
+document.querySelectorAll('.theory-content pre').forEach(function(pre) {
+  var codeEl = pre.querySelector('code');
+  var m = codeEl && codeEl.className.match(/language-(\w+)/);
+  pre.setAttribute('data-lang', m ? m[1] : 'output');
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'theory-copy-btn';
+  btn.textContent = 'copy';
+  btn.addEventListener('click', function() {
+    var text = codeEl ? codeEl.innerText : pre.innerText;
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'copied';
+      setTimeout(function(){ btn.textContent = 'copy'; }, 1500);
+    });
+  });
+  pre.appendChild(btn);
+});
+</script>
+</body>
+</html>
